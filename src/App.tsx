@@ -1,17 +1,20 @@
 import { FC } from "react";
 import "./App.css";
 import { useQuery } from "@apollo/client";
-import GET_USERS from "./graphqlServices/getUsers";
+import { GET_USERS } from "./graphqlQueries";
 import Typography from "@mui/material/Typography";
 import { Grid } from "@mui/material";
+import { FormUser, UserInfo } from "./components/ui";
+import { IUser } from "./interfaces";
 
 const App: FC = () => {
+  const active = true;
   const { data, error, loading } = useQuery(GET_USERS);
 
   if (loading)
     return (
       <Typography variant="body1" color="primary">
-        loading...
+        loading... fff
       </Typography>
     );
   if (error)
@@ -24,11 +27,15 @@ const App: FC = () => {
 
   return (
     <Grid>
-      {data.users.nodes.map((user: any) => (
-        <Typography key={user.id} variant="h1" color="secondary" sx={{ fontSize: 20 }}>
-          {user.name} - {user.email} - {user.gender} - {user.status}
-        </Typography>
-      ))}
+      {active ? (
+        <FormUser />
+      ) : (
+        <>
+          {data.users.nodes.map((user: IUser) => (
+            <UserInfo key={user.id} user={user} />
+          ))}
+        </>
+      )}
     </Grid>
   );
 };

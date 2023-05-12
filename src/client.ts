@@ -1,8 +1,23 @@
-import { ApolloClient, InMemoryCache } from "@apollo/client";
+import { ApolloClient, createHttpLink, InMemoryCache } from "@apollo/client";
+import { setContext } from "@apollo/client/link/context";
+
+const authLink = setContext((_, { headers }) => {
+  return {
+    headers: {
+      ...headers,
+      authorization: `Bearer ${import.meta.env.VITE_AUTH_TOKEN}`,
+      contentType: "application/json",
+      acccept: "application/json",
+    },
+  };
+});
+
+const httpLink = createHttpLink({
+  uri: import.meta.env.VITE_GRAPHQL_ENDPOINT,
+});
 
 const client = new ApolloClient({
-  /* uri: process.env.REACT_APP_GRAPHQL_ENDPOINT, */
-  uri: 'https://gorest.co.in/public/v2/graphql',
+  link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
 });
 
