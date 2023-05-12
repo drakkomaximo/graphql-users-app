@@ -1,6 +1,6 @@
 import { FC, useContext, useEffect } from "react";
 import { Grid, Typography } from "@mui/material";
-import { FormUser, UserInfo } from "./components/ui";
+import { FormUser, PacManLoader, UserInfo } from "./components/ui";
 import { IUser } from "./interfaces";
 import { UserContext } from "./context/user";
 import { useUser } from "./hooks";
@@ -17,9 +17,7 @@ const App: FC = () => {
 
   if (isDbUsersLoading)
     return (
-      <Typography variant="body1" color="primary">
-        loading... fff
-      </Typography>
+      <PacManLoader />
     );
   if (dbUsersError)
     return (
@@ -30,11 +28,9 @@ const App: FC = () => {
     );
 
   return (
-    <Grid container display="flex" justifyContent="center" width="100vw">
+    <Grid container display="flex" justifyContent="center">
       <Grid
         item
-        xs={5}
-        sm={5}
         md={5}
         lg={5}
         xl={5}
@@ -47,11 +43,11 @@ const App: FC = () => {
         display="flex"
         flexWrap="wrap"
         justifyContent="space-between"
-        xs={6}
-        sm={6}
-        md={6}
-        lg={6}
-        xl={6}
+        xs={12}
+        sm={12}
+        md={7}
+        lg={7}
+        xl={7}
         sx={{ padding: "0rem 2rem" }}
       >
         {usersList.length > 0 && (
@@ -62,9 +58,9 @@ const App: FC = () => {
             width="100%"
           >
             <Typography
-              variant="h1"
+              variant="h3"
               color="primary"
-              sx={{ textAlign: "center" }}
+              sx={{ textAlign: "center", marginTop: '2rem' }}
             >
               Users List
             </Typography>
@@ -72,12 +68,12 @@ const App: FC = () => {
               container
               display="flex"
               flexDirection="row"
-              flexWrap='wrap'
+              flexWrap="wrap"
               justifyContent="space-between"
               width="100%"
             >
               {usersList.map((user: IUser) => (
-                <UserInfo key={user.id} user={user} />
+                <UserInfo key={user.id}  user={user} />
               ))}
             </Grid>
           </Grid>

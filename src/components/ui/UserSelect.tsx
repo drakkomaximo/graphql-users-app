@@ -18,7 +18,7 @@ type UserSelectProps = {
   onChange: (event: SelectChangeEvent<string>, child: ReactNode) => void;
 };
 
-const UserSelect: FC<UserSelectProps> = ({
+export const UserSelect: FC<UserSelectProps> = ({
   error,
   errorMessage,
   typeSelect,
@@ -66,5 +66,3 @@ const UserSelect: FC<UserSelectProps> = ({
     </FormControl>
   );
 };
-
-export default UserSelect;

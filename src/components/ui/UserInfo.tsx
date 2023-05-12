@@ -29,12 +29,18 @@ export const UserInfo: FC<UserInfoProps> = ({ user }) => {
       container
       justifyContent="center"
       flexDirection="column"
-      width="48%"
+      item
+      xs={12}
+      sm={12}
+      md={12}
+      lg={6}
+      xl={6}
       sx={{
         border: `1px solid ${gender === "male" ? "blue" : "red"}`,
         padding: "1rem",
         borderRadius: "10px",
         margin: "1rem 0rem",
+        
       }}
     >
       <Grid

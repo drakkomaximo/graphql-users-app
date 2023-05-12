@@ -62,6 +62,7 @@ export const useUser = () => {
     onCompleted(data) {
       const { id } = data.deleteUser.user;
       deleteUser({ id });
+      setUserToUpdate({user: null})
       notification({
         text: "User has been deleted",
         type: "success",

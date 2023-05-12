@@ -1,12 +1,12 @@
-import { Button, TextField, FormLabel } from "@mui/material";
+import { Button, TextField, Typography } from "@mui/material";
 import { FC, useContext, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { IUser } from "../../interfaces";
 import { initValues, userValidationSchema } from "../../utils";
-import UserSelect from "./UserSelect";
 import { useUser } from "../../hooks";
 import { UserContext } from "../../context/user";
+import { UserSelect } from ".";
 
 export const FormUser: FC = () => {
   const { userToUpdate } = useContext(UserContext);
@@ -26,9 +26,9 @@ export const FormUser: FC = () => {
       triggerUpdateOldUser({
         variables: {
           ...data,
-          id: userToUpdate.id
+          id: userToUpdate.id,
         },
-      })
+      });
     } else {
       triggerCreateNewUser({
         variables: {
@@ -45,16 +45,30 @@ export const FormUser: FC = () => {
       setValue("gender", userToUpdate.gender);
       setValue("name", userToUpdate.name);
       setValue("status", userToUpdate.status);
+    }else{
+      setValue("email", '');
+      setValue("gender", '');
+      setValue("name", '');
+      setValue("status", '');
     }
   }, [userToUpdate, setValue]);
 
   return (
     <form
-      style={{ display: "flex", flexDirection: "column", position: "fixed" }}
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        position: "sticky",
+        top: 0,
+      }}
     >
-      <FormLabel component="legend">
+      <Typography
+        variant="h3"
+        color="primary"
+        sx={{ textAlign: "center", marginTop: "2rem" }}
+      >
         {userToUpdate !== null ? "Update Old User" : "Create New User"}
-      </FormLabel>
+      </Typography>
       <Controller
         name={"name"}
         control={control}
