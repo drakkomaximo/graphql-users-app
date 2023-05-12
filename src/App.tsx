@@ -10,10 +10,10 @@ const App: FC = () => {
   const { dbUsersList, dbUsersError, isDbUsersLoading } = useUser();
 
   useEffect(() => {
-    if (dbUsersList.length > 0) {
+    if (dbUsersList.length > 0 && usersList.length === 0) {
       createUsersList({ users: dbUsersList });
     }
-  }, [dbUsersList, createUsersList]);
+  }, [dbUsersList, createUsersList, usersList]);
 
   if (isDbUsersLoading)
     return (

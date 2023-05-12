@@ -1,52 +1,28 @@
 import { Grid, Typography, Button, capitalize, Tooltip } from "@mui/material";
-import { FC, useEffect, useState } from "react";
-import { useLazyQuery } from "@apollo/client";
+import { FC, useContext } from "react";
 import { IUser } from "../../interfaces/user";
-import { GET_USER_BY_ID } from "../../graphqlQueries";
 import { genderIcons, statusChip } from "../../utils";
+import { useUser } from "../../hooks";
+import { UserContext } from "../../context/user";
 
 type UserInfoProps = {
   user: IUser;
 };
 
 export const UserInfo: FC<UserInfoProps> = ({ user }) => {
+  const { setUserToUpdate } = useContext(UserContext);
   const { email, gender, id, name, status } = user;
-  const [triggerFindUser, { data, error }] = useLazyQuery(GET_USER_BY_ID);
-  const [userData, setUserData] = useState<IUser | null>(null);
+  const { triggerDeleteOldUser } = useUser();
 
-  const showUser = ({ userId }: { userId: number }) => {
-    console.log(userId);
-    triggerFindUser({
+  const deleteOldUser = ({ id }: { id: number }) => {
+    triggerDeleteOldUser({
       variables: {
-        userId: 1513712,
+        id,
       },
     });
   };
 
-  useEffect(() => {
-    if (data) {
-      setUserData(data.user);
-    }
-  }, [data]);
-
-  if (userData) {
-    return (
-      <Grid>
-        <Typography variant="h6" color="initial">
-          {userData.name}
-        </Typography>
-        <Typography variant="h6" color="initial">
-          {userData.email}
-        </Typography>
-        <Typography variant="h6" color="initial">
-          {userData.gender}
-        </Typography>
-      </Grid>
-    );
-  }
-
   if (user === null) return null;
-  if (error) return <h1>Error: {error.message}</h1>;
 
   return (
     <Grid
@@ -97,14 +73,16 @@ export const UserInfo: FC<UserInfoProps> = ({ user }) => {
           <Button
             variant="contained"
             color="warning"
-            onClick={() => showUser({ userId: id })}
+            onClick={() =>
+              setUserToUpdate({ user: { email, gender, id, name, status } })
+            }
           >
             Edit Data
           </Button>
           <Button
             variant="contained"
             color="error"
-            onClick={() => showUser({ userId: id })}
+            onClick={() => deleteOldUser({ id })}
           >
             Delete Data
           </Button>

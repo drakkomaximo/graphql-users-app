@@ -1,35 +1,60 @@
 import { Button, TextField, FormLabel } from "@mui/material";
-import { FC } from "react";
+import { FC, useContext, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { IUser } from "../../interfaces";
 import { initValues, userValidationSchema } from "../../utils";
 import UserSelect from "./UserSelect";
 import { useUser } from "../../hooks";
+import { UserContext } from "../../context/user";
 
 export const FormUser: FC = () => {
-  const { triggerCreateNewUser } = useUser();
+  const { userToUpdate } = useContext(UserContext);
+  const { triggerCreateNewUser, triggerUpdateOldUser } = useUser();
   const {
     handleSubmit,
     reset,
     control,
+    setValue,
     formState: { errors },
   } = useForm<IUser>({
     defaultValues: initValues,
     resolver: zodResolver(userValidationSchema),
   });
   const onSubmit = (data: IUser) => {
-    triggerCreateNewUser({
-      variables: {
-        ...data,
-      },
-    });
+    if (userToUpdate !== null) {
+      triggerUpdateOldUser({
+        variables: {
+          ...data,
+          id: userToUpdate.id
+        },
+      })
+    } else {
+      triggerCreateNewUser({
+        variables: {
+          ...data,
+        },
+      });
+    }
     reset(initValues);
   };
 
+  useEffect(() => {
+    if (userToUpdate !== null) {
+      setValue("email", userToUpdate.email);
+      setValue("gender", userToUpdate.gender);
+      setValue("name", userToUpdate.name);
+      setValue("status", userToUpdate.status);
+    }
+  }, [userToUpdate, setValue]);
+
   return (
-    <form style={{ display: "flex", flexDirection: "column" }}>
-      <FormLabel component="legend">Create New User</FormLabel>
+    <form
+      style={{ display: "flex", flexDirection: "column", position: "fixed" }}
+    >
+      <FormLabel component="legend">
+        {userToUpdate !== null ? "Update Old User" : "Create New User"}
+      </FormLabel>
       <Controller
         name={"name"}
         control={control}
@@ -89,7 +114,7 @@ export const FormUser: FC = () => {
         variant="contained"
         onClick={handleSubmit(onSubmit)}
       >
-        Submit
+        {userToUpdate !== null ? "Update" : "Create"}
       </Button>
     </form>
   );
