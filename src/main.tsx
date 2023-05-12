@@ -5,6 +5,8 @@ import "./index.css";
 import { ApolloProvider } from "@apollo/client";
 import client from "./client";
 import { UserProvider } from "./context/user/index.ts";
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from "react-toastify";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
@@ -13,5 +15,6 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
         <App />
       </UserProvider>
     </ApolloProvider>
+    <ToastContainer />
   </React.StrictMode>
 );

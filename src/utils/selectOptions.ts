@@ -1,7 +1,7 @@
 import { genderOptions, statusOptions } from ".";
-import { RadioOptionsTypes } from "../interfaces";
+import { SelectOptionsTypes } from "../interfaces";
 
-export const radioOptions = ({type}: {type: RadioOptionsTypes}) =>{
+export const selectOptions = ({type}: {type: SelectOptionsTypes}) =>{
     if(type === 'gender') return genderOptions
     if(type === 'status') return statusOptions
     return []

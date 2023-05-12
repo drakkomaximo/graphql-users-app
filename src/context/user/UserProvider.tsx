@@ -19,13 +19,21 @@ export const UserProvider: FC<{ children: JSX.Element }> = ({ children }) => {
       payload: user
     })
   }
+
+  const createUsersList = ({users}:{users: IUser[]}) =>{
+    dispatch({
+      type: '[User] Create Users List',
+      payload: users
+    })
+  }
   
 
   return (
     <UserContext.Provider
       value={{
         ...state,
-        addNewUser
+        addNewUser,
+        createUsersList
       }}
     >
       {children}

@@ -1,5 +1,12 @@
-export const genderEnums = ["male", "female", "other"] as const
+export const genderEnums = ["male", "female"] as const
 export const statusEnums = ["active", "inactive"] as const
+
+export const initValues = {
+  name: "",
+  email: "",
+  gender: "",
+  status: "",
+}
 
 export const genderOptions = [
   {
@@ -11,11 +18,6 @@ export const genderOptions = [
     id: 2,
     label: "Female",
     value: "female",
-  },
-  {
-    id: 3,
-    label: "Other",
-    value: "other",
   },
 ];
 

@@ -1,31 +1,21 @@
-import {
-  Button,
-  TextField,
-  FormLabel,
-  Radio,
-  FormControlLabel,
-  RadioGroup,
-  FormControl,
-  FormHelperText,
-} from "@mui/material";
+import { Button, TextField, FormLabel } from "@mui/material";
 import { FC } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { IUser, RadioOptionsTypes } from "../../interfaces";
-import { useMutation } from "@apollo/client";
-import { CREATE_NEW_USER } from "../../graphqlQueries";
-import { radioOptions, userValidationSchema } from "../../utils";
+import { IUser } from "../../interfaces";
+import { initValues, userValidationSchema } from "../../utils";
+import UserSelect from "./UserSelect";
+import { useUser } from "../../hooks";
 
-/* type FormUserProps = {}; */
-
-export const FormUser: FC /* <FormUserProps> */ = () => {
-  const [triggerCreateNewUser, {error: createNewUserError}] = useMutation(CREATE_NEW_USER);
+export const FormUser: FC = () => {
+  const { triggerCreateNewUser } = useUser();
   const {
     handleSubmit,
     reset,
     control,
     formState: { errors },
   } = useForm<IUser>({
+    defaultValues: initValues,
     resolver: zodResolver(userValidationSchema),
   });
   const onSubmit = (data: IUser) => {
@@ -34,24 +24,7 @@ export const FormUser: FC /* <FormUserProps> */ = () => {
         ...data,
       },
     });
-
-    if(createNewUserError){
-      console.log(createNewUserError.message)
-      return
-    }
-    
-    reset();
-  };
-
-  const generateRadioOptions = ({ type }: { type: RadioOptionsTypes }) => {
-    return radioOptions({ type }).map((singleOption) => (
-      <FormControlLabel
-        key={singleOption.id}
-        value={singleOption.value}
-        label={singleOption.label}
-        control={<Radio />}
-      />
-    ));
+    reset(initValues);
   };
 
   return (
@@ -89,30 +62,26 @@ export const FormUser: FC /* <FormUserProps> */ = () => {
         name={"gender"}
         control={control}
         render={({ field: { onChange, value } }) => (
-          <FormControl error={!!(errors && errors.gender)}>
-            <FormLabel id="gender-radio">Gender</FormLabel>
-            <RadioGroup value={value} onChange={onChange}>
-              {generateRadioOptions({ type: "gender" })}
-            </RadioGroup>
-            {errors && errors.gender && (
-              <FormHelperText>{errors.gender.message}</FormHelperText>
-            )}
-          </FormControl>
+          <UserSelect
+            error={!!(errors && errors.gender)}
+            errorMessage={errors && errors.gender ? errors.gender.message : ""}
+            onChange={onChange}
+            typeSelect="gender"
+            value={value}
+          />
         )}
       />
       <Controller
         name={"status"}
         control={control}
         render={({ field: { onChange, value } }) => (
-          <FormControl error={!!(errors && errors.status)}>
-            <FormLabel id="status-radio">Status</FormLabel>
-            <RadioGroup value={value} onChange={onChange}>
-              {generateRadioOptions({ type: "status" })}
-            </RadioGroup>
-            {errors && errors.status && (
-              <FormHelperText>{errors.status.message}</FormHelperText>
-            )}
-          </FormControl>
+          <UserSelect
+            error={!!(errors && errors.status)}
+            errorMessage={errors && errors.status ? errors.status.message : ""}
+            onChange={onChange}
+            typeSelect="status"
+            value={value}
+          />
         )}
       />
       <Button
