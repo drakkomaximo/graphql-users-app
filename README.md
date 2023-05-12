@@ -61,5 +61,6 @@ In delete mode this action is permanent and instant (think about that first)
 
 </details>
 
+You can test the app with this link: [Test app](https://react-graphql-user-manager.netlify.app/)
 
 
