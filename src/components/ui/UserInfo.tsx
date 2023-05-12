@@ -1,7 +1,7 @@
 import { Grid, Typography, Button, capitalize, Tooltip } from "@mui/material";
 import { FC, useContext } from "react";
 import { IUser } from "../../interfaces/user";
-import { genderIcons, statusChip } from "../../utils";
+import { genderIcons, notification, statusChip } from "../../utils";
 import { useUser } from "../../hooks";
 import { UserContext } from "../../context/user";
 
@@ -12,13 +12,17 @@ type UserInfoProps = {
 export const UserInfo: FC<UserInfoProps> = ({ user }) => {
   const { setUserToUpdate } = useContext(UserContext);
   const { email, gender, id, name, status } = user;
-  const { triggerDeleteOldUser } = useUser();
+  const { triggerDeleteOldUser, isDeletingUser } = useUser();
 
   const deleteOldUser = ({ id }: { id: number }) => {
     triggerDeleteOldUser({
       variables: {
         id,
       },
+    });
+    notification({
+      text: "Processando...",
+      type: "warning",
     });
   };
 
@@ -40,7 +44,6 @@ export const UserInfo: FC<UserInfoProps> = ({ user }) => {
         padding: "1rem",
         borderRadius: "10px",
         margin: "1rem 0rem",
-        
       }}
     >
       <Grid
@@ -82,6 +85,7 @@ export const UserInfo: FC<UserInfoProps> = ({ user }) => {
             onClick={() =>
               setUserToUpdate({ user: { email, gender, id, name, status } })
             }
+            disabled={isDeletingUser}
           >
             Edit Data
           </Button>
@@ -89,6 +93,7 @@ export const UserInfo: FC<UserInfoProps> = ({ user }) => {
             variant="contained"
             color="error"
             onClick={() => deleteOldUser({ id })}
+            disabled={isDeletingUser}
           >
             Delete Data
           </Button>

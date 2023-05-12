@@ -10,7 +10,12 @@ import { UserSelect } from ".";
 
 export const FormUser: FC = () => {
   const { userToUpdate } = useContext(UserContext);
-  const { triggerCreateNewUser, triggerUpdateOldUser } = useUser();
+  const {
+    triggerCreateNewUser,
+    triggerUpdateOldUser,
+    isCreatingUser,
+    isUploadingUser,
+  } = useUser();
   const {
     handleSubmit,
     reset,
@@ -36,6 +41,10 @@ export const FormUser: FC = () => {
         },
       });
     }
+    notification({
+      text: "Processando...",
+      type: "warning",
+    });
     reset(initValues);
   };
 
@@ -45,11 +54,11 @@ export const FormUser: FC = () => {
       setValue("gender", userToUpdate.gender);
       setValue("name", userToUpdate.name);
       setValue("status", userToUpdate.status);
-    }else{
-      setValue("email", '');
-      setValue("gender", '');
-      setValue("name", '');
-      setValue("status", '');
+    } else {
+      setValue("email", "");
+      setValue("gender", "");
+      setValue("name", "");
+      setValue("status", "");
     }
   }, [userToUpdate, setValue]);
 
@@ -127,6 +136,7 @@ export const FormUser: FC = () => {
         sx={{ marginTop: "1rem" }}
         variant="contained"
         onClick={handleSubmit(onSubmit)}
+        disabled={isCreatingUser || isUploadingUser}
       >
         {userToUpdate !== null ? "Update" : "Create"}
       </Button>

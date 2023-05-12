@@ -11,7 +11,7 @@ export const useUser = () => {
     error: dbUsersError,
     loading: isDbUsersLoading,
   } = useQuery(GET_USERS);
-  const [triggerCreateNewUser] = useMutation(CREATE_NEW_USER, {
+  const [triggerCreateNewUser, {loading: isCreatingUser}] = useMutation(CREATE_NEW_USER, {
     onCompleted(data) {
       const { id, name, email, gender, status } = data.createUser.user;
       const newUser = {
@@ -34,7 +34,7 @@ export const useUser = () => {
       });
     },
   });
-  const [triggerUpdateOldUser] = useMutation(UPDATE_OLD_USER, {
+  const [triggerUpdateOldUser, {loading: isUploadingUser}] = useMutation(UPDATE_OLD_USER, {
     onCompleted(data) {
       const { id, name, email, gender, status } = data.updateUser.user;
       const updatedUser = {
@@ -58,7 +58,7 @@ export const useUser = () => {
       });
     },
   });
-  const [triggerDeleteOldUser] = useMutation(DELETE_USER, {
+  const [triggerDeleteOldUser, {loading: isDeletingUser}] = useMutation(DELETE_USER, {
     onCompleted(data) {
       const { id } = data.deleteUser.user;
       deleteUser({ id });
@@ -85,6 +85,9 @@ export const useUser = () => {
         ? dbUsers.users.nodes
         : [],
     dbUsersError,
+    isDeletingUser,
+    isCreatingUser,
+    isUploadingUser,
     isDbUsersLoading,
   };
 };
