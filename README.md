@@ -2,7 +2,7 @@
 This is a React app consuming a free GraphQl API
 
 <details>
-<summary>Instalations:</summary>
+<summary>Instalations to local test:</summary>
 <br>
   
 ## First Step:
@@ -61,6 +61,17 @@ In delete mode this action is permanent and instant (think about that first)
 
 </details>
 
-You can test the app with this link: [Test app](https://react-graphql-user-manager.netlify.app/)
+<details>
+<summary>Stacks:</summary>
+<br>
+  
+![javascript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)![typescript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)![reactjs](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)![materialui](https://img.shields.io/badge/Material--UI-0081CB?style=for-the-badge&logo=material-ui&logoColor=white)
+  
+* Context API
+* GraphQl
+  
+</details>
+
+You can test the app **ONLINE** with this link: [Test app](https://react-graphql-user-manager.netlify.app/)
 
 
